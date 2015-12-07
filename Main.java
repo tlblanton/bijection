@@ -1,7 +1,6 @@
 /*
 problem found on: https://community.topcoder.com/stat?c=problem_statement&pm=14008
  */
-
 package com.tylerblanton;
 import static java.lang.System.out;
 import java.util.*;
@@ -11,27 +10,49 @@ public class Main
 {
     static class relationClassifier
     {
-        boolean isMultiple(int selection, int []intArr)
+        //function returns spot of next instance of 'findThis'
+
+        boolean ruinBijection(int currentIndex, int[] firstArr, int[] secondArr)
         {
-            boolean mult = false;
+            for(int i = 0; i < firstArr.length; ++i)
+            {
+                if(i != currentIndex)
+                {
+                    if(firstArr[i] == firstArr[currentIndex])       //if then have the same value in the first array
+                    {
+                        if(secondArr[i] == secondArr[currentIndex])     ;//if they have they same thing in the second array also, then the bijection is ruined
+                        {
+                            return true;        //if two x's have the same y then the bijection is ruined
+                        }
 
-
-
-
-
-            return mult;
+                    }
+                }
+            }
+            return false;
         }
+
         String isBijection(int[] domain, int[] range)
         {
+            boolean isBijection = true;
+            //go through x's first
             for(int i = 0; i < domain.length; ++i)
             {
-
+                if(ruinBijection(i, domain, range) || ruinBijection(i, range, domain))
+                {
+                    return "Not";
+                }
+                else
+                {
+                    return "Bijection";
+                }
             }
-
-
             return "Not";
         }
     }
+
+
+
+    //MAIN
     public static void main(String[] args)
     {
         ArrayList<String> lines = new ArrayList<String>();
@@ -63,19 +84,15 @@ public class Main
         int[] d = new int[dStr.length];
         int[] r = new int[rStr.length];
 
-
         for(int i = 0; i < dStr.length; ++i)
         {
             int strToNum = Integer.valueOf(dStr[i]);
             d[i] = strToNum;
-            out.println(d[i]);
         }
-        out.println(" then ");
         for(int i = 0; i < rStr.length; ++i)
         {
             int strToNum = Integer.valueOf(rStr[i]);
             r[i] = strToNum;
-            out.println(r[i]);
         }
 
         out.println(func.isBijection(d, r));
